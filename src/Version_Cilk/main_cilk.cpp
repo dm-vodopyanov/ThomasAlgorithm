@@ -73,7 +73,11 @@ int main(int argc, char* argv[]) {
     vector<double> matrix;
     matrix = parseInputFile(inputFile, N);
 
+    vector<double> x;
+
     // ADD YOUR CODE HERE
+
+    writeToFile(argv[2], x, N);
 
     return 0;
 }

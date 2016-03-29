@@ -1,6 +1,8 @@
-# Thomas Algorithm Demo application
+## Thomas Algorithm Demo application
 
-## BKMs
+**Vasily Kumaev, Dmitry Vodopyanov**  
+
+### BKMs
 1. Configure the solution using CMake for Visual Studio
 2. Open Visual Studio and make sure that all your projects compile with Intel(R) C++ Compiler
 3. For all projects: Go to Properties -> Debugging -> Working Directory and add the path to ThomasAlgorithm/bin
