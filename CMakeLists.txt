@@ -14,9 +14,4 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIRECTORY})
 
 message ("cxx Flags: " ${CMAKE_CXX_FLAGS})
 
-add_subdirectory(src/MatrixGeneration)
-add_subdirectory(src/Spline)
-add_subdirectory(src/Version_Cilk)
-add_subdirectory(src/Version_OpenMP)
-add_subdirectory(src/Version_Sequential)
-add_subdirectory(src/Version_TBB)
+add_subdirectory(src)
