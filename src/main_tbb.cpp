@@ -40,14 +40,21 @@ vector<double> parseInputFile(FILE* inputFile, int& N) {
     return matrix;
 }
 
-void writeToFile(char* fileName, vector<double> x, int N) {
+void writeResultToFile(char* fileName, vector<double> x, int N) {
     FILE* outputFile;
-    outputFile = fopen("outputfile", "wt");
+    outputFile = fopen("outputfile_tbb", "wt");
     fprintf(outputFile, "%d\n", N);
     for (int i = 0; i < N; i++) {
         fprintf(outputFile, "%lf\n", x[i]);
     }
     fclose(outputFile);
+}
+
+void writeTimeToFile(double resultTime) {
+    FILE* timeFile;
+    timeFile = fopen("timefile_tbb", "wt");
+    fprintf(timeFile, "%lf\n", resultTime);
+    fclose(timeFile);
 }
 
 int main(int argc, char* argv[]) {
@@ -75,9 +82,19 @@ int main(int argc, char* argv[]) {
 
     vector<double> x;
 
+    LARGE_INTEGER frequency, start, end;
+    double resultTime;
+
+    QueryPerformanceFrequency(&frequency);
+    QueryPerformanceCounter(&start);
+
     // ADD YOUR CODE HERE
 
-    writeToFile(argv[2], x, N);
+    QueryPerformanceCounter(&end);
+    resultTime = (double)(end.QuadPart - start.QuadPart) / (double)frequency.QuadPart;
+
+    writeResultToFile(argv[2], x, N);
+    writeTimeToFile(resultTime);
 
     return 0;
 }

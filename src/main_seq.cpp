@@ -40,14 +40,21 @@ vector<double> parseInputFile(FILE* inputFile, int& N) {
     return matrix;
 }
 
-void writeToFile(char* fileName, vector<double> x, int N) {
+void writeResultToFile(char* fileName, vector<double> x, int N) {
     FILE* outputFile;
-    outputFile = fopen("outputfile", "wt");
+    outputFile = fopen("outputfile_seq", "wt");
     fprintf(outputFile, "%d\n", N);
     for (int i = 0; i < N; i++) {
         fprintf(outputFile, "%lf\n", x[i]);
     }
     fclose(outputFile);
+}
+
+void writeTimeToFile(double resultTime) {
+    FILE* timeFile;
+    timeFile = fopen("timefile_seq", "wt");
+    fprintf(timeFile, "%lf\n", resultTime);
+    fclose(timeFile);
 }
 
 int main(int argc, char* argv[]) {
@@ -82,6 +89,12 @@ int main(int argc, char* argv[]) {
     alpha.push_back(-matrix[2] / matrix[1]);
     beta.push_back(-matrix[3] / matrix[1]);
 
+    LARGE_INTEGER frequency, start, end;
+    double resultTime;
+
+    QueryPerformanceFrequency(&frequency);
+    QueryPerformanceCounter(&start);
+
     for (int i = 1; i < N; i++) {
         //alpha[i] = -b[i - 1] / (a[i - 1] * alpha[0] + c[i - 1]);
         //beta[i] = (f[i - 1] - a[i - 1] * beta[i - 1]) / (a[i - 1] * alpha[i - 1] + c[i - 1]);
@@ -101,9 +114,13 @@ int main(int argc, char* argv[]) {
         j++;
     }
 
+    QueryPerformanceCounter(&end);
+    resultTime = (double)(end.QuadPart - start.QuadPart) / (double)frequency.QuadPart;
+
     reverse(x.begin(), x.end());
 
-    writeToFile(argv[2], x, N);
+    writeResultToFile(argv[2], x, N);
+    writeTimeToFile(resultTime);
 
     return 0;
 }
