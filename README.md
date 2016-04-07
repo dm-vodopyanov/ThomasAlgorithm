@@ -12,7 +12,7 @@ This application provides four implementations of [Thomas algorithm](https://en.
 - OpenMP
 - Intel(R) Threading Building Blocks
 - Intel(R) Cilk(TM) Plus
-    
+
 This algorithm solves the problem of finding the interpolating square spline.
 
 
@@ -34,9 +34,9 @@ This algorithm solves the problem of finding the interpolating square spline.
 ----------------------------------------------------------------------------
 ```
 
-MatrixGeneration project generates tridiagonal matrices and writes them to file.  
-Version_Seq, Version_OpenMP, Version_TBB, Version_Cilk projects get the MatrixGeneration's file, make calculations using one of the technologies describing above, and create two files: the file with result vector and the file with execution time of the implementation.  
-Spline project implements the logic of finding the interpolating square spline and executes each of Version_### project.  
+***MatrixGeneration*** project generates tridiagonal matrices and writes them to file.  
+***Version_Seq***, ***Version_OpenMP***, ***Version_TBB***, ***Version_Cilk*** projects get the MatrixGeneration's file, make calculations using one of the technologies describing above, and create two files: the file with result vector and the file with execution time of the implementation.  
+***Spline*** project implements the logic of finding the interpolating square spline and executes each of Version_### project.  
 
 
 ### BKMs
