@@ -122,5 +122,7 @@ int main(int argc, char* argv[]) {
     writeResultToFile(argv[2], x, N);
     writeTimeToFile(resultTime);
 
+    printf("Files created.\n");
+
     return 0;
 }
