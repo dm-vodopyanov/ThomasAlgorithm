@@ -23,8 +23,7 @@ if __name__ == "__main__":
                 ipsxe_path = "\"C:\Program Files (x86)\\IntelSWTools\\compilers_and_libraries\windows\\bin\\"
             icc_env = ipsxe_path + "compilervars.bat\"" + " " + "intel64"
         elif platform.system() == 'Linux':
-            if (os.path.exists("/opt/intel/compilers_and_libraries/linux/bin")):
-                ipsxe_path = "/opt/intel/compilers_and_libraries/linux/bin"
+            icc_env = "source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64"
 
         curr_time = datetime.datetime.now().isoformat()
         curr_time = curr_time.replace(":",".")
@@ -38,13 +37,12 @@ if __name__ == "__main__":
         if platform.system() == 'Windows':
             os.system(icc_env + " & " + "icl.exe ..\src\main_gen_matrix.cpp /O2 /D NDEBUG")
         elif platform.system() == 'Linux':
-            os.system(icc_env + " ; " + "icc -O2 -DNDEBUG -m64 -o main_gen_matrix main_gen_matrix.cpp")
+            os.system(icc_env + " ; " + "icc -O2 -DNDEBUG -m64 -o main_gen_matrix ../src/main_gen_matrix.cpp")
 
         if platform.system() == 'Windows':
             os.system("copy main_gen_matrix.exe " + curr_time)
-            os.system("del main_gen_matrix.exe")
         elif platform.system() == 'Linux':
-            os.system("cp main_gen_matrix" + curr_time)
+            os.system("cp main_gen_matrix " + curr_time)
             os.system("rm main_gen_matrix")
 
         print("="*79)
@@ -63,14 +61,12 @@ if __name__ == "__main__":
             print("="*79)
             if platform.system() == 'Windows':
                 os.system(icc_env + delim + "icl.exe ..\src\main_" + sys.argv[i] + ".cpp /O2 /D NDEBUG")
-
                 os.system("copy main_" + sys.argv[i] + ".exe " + curr_time)
                 os.system("del main_" + sys.argv[i] + ".exe")
             elif platform.system() == 'Linux':
-                os.system(icc_env + " ; " + "icc ..\src\main_" + sys.argv[i] + ".cpp -O2 -DNDEBUG -m64 -o main_" + sys.argv[i])
-
-                os.system("cp main_" + sys.argv[i] + "" + curr_time)
-                os.system("del main_" + sys.argv[i] + "")
+                os.system(icc_env + " ; " + "icc ../src/main_" + sys.argv[i] + ".cpp -O2 -DNDEBUG -m64 -o main_" + sys.argv[i])
+                os.system("cp main_" + sys.argv[i] + " " + curr_time)
+                os.system("rm main_" + sys.argv[i] + "")
 
             print("="*79)
             print("Running MatrixGeneration project...")
@@ -78,7 +74,7 @@ if __name__ == "__main__":
             if platform.system() == 'Windows':
                 os.system("cd " + curr_time + "& main_" + sys.argv[i] + ".exe " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
             elif platform.system() == 'Linux':
-                os.system("cd " + curr_time + "; main_" + sys.argv[i] + "" + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
+                os.system("cd " + curr_time + " ; ./main_" + sys.argv[i] + " " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
             i = i + 1
 
         print("="*79)
@@ -87,8 +83,7 @@ if __name__ == "__main__":
 
         if platform.system() == 'Windows':
             os.system("del *.obj")
-        if platform.system() == 'Linux':
-            os.system("rm *.obj")
+            os.system("del *.exe")
 
         print("")
 
