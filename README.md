@@ -47,8 +47,7 @@ This algorithm solves the problem of finding the interpolating square spline.
 3. ***For all projects:*** Go to Properties -> Debugging -> Working Directory and add set the value ```$(ProjectDir)/../../../bin```
 4. ***For all projects:*** Go to Properties -> C/C++ -> Language -> OpenMP Support -> Generate Parallel Code (/Qopenmp)
 5. ***For MatrixGeneration project:*** Go to Properties -> Debugging -> Command Arguments and set value ```5 0 1```
-6. ***For all Version_### projects:*** Go to Properties -> Debugging -> Command Arguments and set value ```inputfile outputfile timefile
-```   
+6. ***For all Version_### projects:*** Go to Properties -> Debugging -> Command Arguments and set value ```inputfile outputfile timefile```   
 
 #### Development process
 1. Please make sure that the version of the file you contribute is the latest: ***as frequently as you can execute ```git pull```***
