@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <vector>
+#include <omp.h>
 
 #define ROWS_NUM    4
 
@@ -82,16 +83,12 @@ int main(int argc, char* argv[]) {
 
     vector<double> x;
 
-    LARGE_INTEGER frequency, start, end;
-    double resultTime;
-
-    QueryPerformanceFrequency(&frequency);
-    QueryPerformanceCounter(&start);
+    double t1 = omp_get_wtime();
 
     // ADD YOUR CODE HERE
 
-    QueryPerformanceCounter(&end);
-    resultTime = (double)(end.QuadPart - start.QuadPart) / (double)frequency.QuadPart;
+    double t2 = omp_get_wtime();
+    double resultTime = t2 - t1;
 
     writeResultToFile(argv[2], x, N);
     writeTimeToFile(resultTime);

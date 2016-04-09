@@ -60,7 +60,7 @@ if __name__ == "__main__":
             print("Compiling Version_" + sys.argv[i] + " project...")
             print("="*79)
             if platform.system() == 'Windows':
-                os.system(icc_env + delim + "icl.exe ..\src\main_" + sys.argv[i] + ".cpp /O2 /D NDEBUG")
+                os.system(icc_env + delim + "icl.exe ..\src\main_" + sys.argv[i] + ".cpp /O2 /D NDEBUG /Qopenmp")
                 os.system("copy main_" + sys.argv[i] + ".exe " + curr_time)
                 os.system("del main_" + sys.argv[i] + ".exe")
             elif platform.system() == 'Linux':
