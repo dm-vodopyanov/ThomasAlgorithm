@@ -51,7 +51,7 @@ if __name__ == "__main__":
         if platform.system() == 'Windows':
             os.system("cd " + curr_time + "& main_gen_matrix.exe " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3])
         elif platform.system() == 'Linux':
-            os.system("cd " + curr_time + "; ./main_gen_matrix " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3])
+            os.system(icc_env + " ; " + "cd " + curr_time + "; ./main_gen_matrix " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3])
 
         i = 4
         while (i < len(sys.argv)):
@@ -73,7 +73,7 @@ if __name__ == "__main__":
             if platform.system() == 'Windows':
                 os.system("cd " + curr_time + "& main_" + sys.argv[i] + ".exe " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
             elif platform.system() == 'Linux':
-                os.system("cd " + curr_time + " ; ./main_" + sys.argv[i] + " " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
+                os.system(icc_env + " ; " + "cd " + curr_time + " ; ./main_" + sys.argv[i] + " " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
             i = i + 1
 
         print("="*79)
