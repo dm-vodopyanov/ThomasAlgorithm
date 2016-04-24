@@ -87,34 +87,38 @@ int main(int argc, char* argv[]) {
 
     double t1 = omp_get_wtime();
 
-    //alpha[0] = -b[0] / c[0];
-    //beta[0]  = -f[0] / c[0];
-    alpha.push_back(-matrix[2] / matrix[1]);
-    beta.push_back(-matrix[3] / matrix[1]);
+    // SEQUINTAL VERSION STARTS =========================================================
 
-    for (int i = 1; i < N; i++) {
-        //alpha[i] = -b[i - 1] / (a[i - 1] * alpha[0] + c[i - 1]);
-        //beta[i] = (f[i - 1] - a[i - 1] * beta[i - 1]) / (a[i - 1] * alpha[i - 1] + c[i - 1]);
-        alpha.push_back(-matrix[ROWS_NUM * (i - 1) + 2] / (matrix[ROWS_NUM * (i - 1)] + alpha[i - 1] + matrix[ROWS_NUM * (i - 1) + 1]));
-        beta.push_back((matrix[ROWS_NUM * (i - 1) + 3] - matrix[ROWS_NUM * (i - 1)] * beta[i - 1]) 
-                                                   / (matrix[ROWS_NUM * (i - 1)] * alpha[i - 1] + matrix[ROWS_NUM * (i - 1) + 1]));
+    x.resize(N);
+
+    alpha.push_back(-matrix[2] / matrix[1]);  // alpha_2 = -b_1 / c_1
+    beta.push_back(matrix[3] / matrix[1]);    // beta_2  =  f_1 / c_1
+
+    for (int i = 2; i < N; i++) {
+        alpha.push_back(-matrix[ROWS_NUM * (i - 1) + 2] 
+            / (matrix[ROWS_NUM * (i - 1)] * alpha[i - 2]
+                + matrix[ROWS_NUM * (i - 1) + 1]));  // alpha_i+1
+        beta.push_back((matrix[ROWS_NUM * (i - 1) + 3]
+            - matrix[ROWS_NUM * (i - 1)] * beta[i - 2]) 
+            / (matrix[ROWS_NUM * (i - 1)] * alpha[i - 2] 
+                + matrix[ROWS_NUM * (i - 1) + 1]));  // beta_i+1
     }
 
-    //x[N - 1] = (f[N - 1] - a[N - 1] * beta[N - 1]) / (a[N - 1] * alpha[N - 1] + c[N - 1]);
-    x.push_back((matrix[ROWS_NUM * (N - 1) + 3] - matrix[ROWS_NUM * (N - 1)] * beta[N - 1]) / (matrix[ROWS_NUM * (N - 1)] * alpha[N - 1] + matrix[ROWS_NUM * (N - 1) + 1]));
+    x[N - 1] = (matrix[ROWS_NUM * (N - 1) + 3]
+        - matrix[ROWS_NUM * (N - 1)] * beta[N - 2]) 
+        / (matrix[ROWS_NUM * (N - 1)] * alpha[N - 2] 
+            + matrix[ROWS_NUM * (N - 1) + 1]);  // x_N
 
     int i = N - 2;
-    int j = 0;
     while (i >= 0) {
-        x.push_back(alpha[i + 1] * x[j] + beta[i + 1]);
+        x[i] = (alpha[i] * x[i + 1] + beta[i]);  // x_i
         i--;
-        j++;
     }
+
+    // SEQUINTAL VERSION ENDS ===========================================================
 
     double t2 = omp_get_wtime();
     double resultTime = t2 - t1;
-
-    reverse(x.begin(), x.end());
 
     writeResultToFile(argv[2], x, N);
     writeTimeToFile(resultTime);
