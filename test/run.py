@@ -59,11 +59,11 @@ if __name__ == "__main__":
             print("Compiling Version_" + sys.argv[i] + " project...")
             print("="*79)
             if platform.system() == 'Windows':
-                os.system(icc_env + delim + "icl.exe ..\src\main_" + sys.argv[i] + ".cpp /O2 /D NDEBUG /Qopenmp")
+                os.system(icc_env + delim + "icl.exe ..\src\main_" + sys.argv[i] + ".cpp /O2 /D NDEBUG /Qopenmp /link tbb.lib")
                 os.system("copy main_" + sys.argv[i] + ".exe " + curr_time)
                 os.system("del main_" + sys.argv[i] + ".exe")
             elif platform.system() == 'Linux':
-                os.system(icc_env + " ; " + "icc ../src/main_" + sys.argv[i] + ".cpp -O2 -DNDEBUG -m64 -qopenmp -o main_" + sys.argv[i])
+                os.system(icc_env + " ; " + "icc ../src/main_" + sys.argv[i] + ".cpp -O2 -DNDEBUG -m64 -qopenmp -ltbb -o main_" + sys.argv[i])
                 os.system("cp main_" + sys.argv[i] + " " + curr_time)
                 os.system("rm main_" + sys.argv[i] + "")
 
