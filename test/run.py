@@ -36,7 +36,7 @@ if __name__ == "__main__":
         if platform.system() == 'Windows':
             os.system(icc_env + " & " + "icl.exe ..\src\main_gen_matrix.cpp /O2 /D NDEBUG")
         elif platform.system() == 'Linux':
-            os.system(icc_env + " ; " + "icc -O2 -DNDEBUG -m64 -openmp -o main_gen_matrix ../src/main_gen_matrix.cpp")
+            os.system(icc_env + " ; " + "icc -O2 -DNDEBUG -m64 -qopenmp -o main_gen_matrix ../src/main_gen_matrix.cpp")
 
         if platform.system() == 'Windows':
             os.system("copy main_gen_matrix.exe " + curr_time)
@@ -63,7 +63,7 @@ if __name__ == "__main__":
                 os.system("copy main_" + sys.argv[i] + ".exe " + curr_time)
                 os.system("del main_" + sys.argv[i] + ".exe")
             elif platform.system() == 'Linux':
-                os.system(icc_env + " ; " + "icc ../src/main_" + sys.argv[i] + ".cpp -O2 -DNDEBUG -m64 -openmp -o main_" + sys.argv[i])
+                os.system(icc_env + " ; " + "icc ../src/main_" + sys.argv[i] + ".cpp -O2 -DNDEBUG -m64 -qopenmp -o main_" + sys.argv[i])
                 os.system("cp main_" + sys.argv[i] + " " + curr_time)
                 os.system("rm main_" + sys.argv[i] + "")
 
