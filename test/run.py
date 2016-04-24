@@ -8,6 +8,10 @@ def help():
     print("    <dimension>  <min element in matrix>  <max element in matrix>  <version_###>  [<version_###> ...]")
 
 if __name__ == "__main__":
+    curr_time = datetime.datetime.now().isoformat()
+    curr_time = curr_time.replace(":",".")
+    os.system("mkdir " + curr_time)
+
     delim = " & "
     if len(sys.argv) == 1:
         help()
@@ -24,11 +28,6 @@ if __name__ == "__main__":
             icc_env = ipsxe_path + "compilervars.bat\"" + " " + "intel64"
         elif platform.system() == 'Linux':
             icc_env = "source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64"
-
-        curr_time = datetime.datetime.now().isoformat()
-        curr_time = curr_time.replace(":",".")
-
-        os.system("mkdir " + curr_time)
 
         print("="*79)
         print("Compiling MatrixGeneration project...")
@@ -69,7 +68,7 @@ if __name__ == "__main__":
                 os.system("rm main_" + sys.argv[i] + "")
 
             print("="*79)
-            print("Running MatrixGeneration project...")
+            print("Running Version_" + sys.argv[i] + " project...")
             print("="*79)
             if platform.system() == 'Windows':
                 os.system("cd " + curr_time + "& main_" + sys.argv[i] + ".exe " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
