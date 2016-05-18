@@ -51,3 +51,4 @@ This algorithm solves the problem of finding the interpolating square spline.
 
 #### Development process
 1. Please make sure that the version of the file you contribute is the latest: ***as frequently as you can execute ```git pull```***
+2. To run the script in test folder you should execute the following command (example): ```python run.py 1000 10 15 seq openmp```

@@ -8,6 +8,10 @@ def help():
     print("    <dimension>  <min element in matrix>  <max element in matrix>  <version_###>  [<version_###> ...]")
 
 if __name__ == "__main__":
+    curr_time = datetime.datetime.now().isoformat()
+    curr_time = curr_time.replace(":",".")
+    os.system("mkdir " + curr_time)
+
     delim = " & "
     if len(sys.argv) == 1:
         help()
@@ -25,11 +29,6 @@ if __name__ == "__main__":
         elif platform.system() == 'Linux':
             icc_env = "source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64"
 
-        curr_time = datetime.datetime.now().isoformat()
-        curr_time = curr_time.replace(":",".")
-
-        os.system("mkdir " + curr_time)
-
         print("="*79)
         print("Compiling MatrixGeneration project...")
         print("="*79)
@@ -37,7 +36,7 @@ if __name__ == "__main__":
         if platform.system() == 'Windows':
             os.system(icc_env + " & " + "icl.exe ..\src\main_gen_matrix.cpp /O2 /D NDEBUG")
         elif platform.system() == 'Linux':
-            os.system(icc_env + " ; " + "icc -O2 -DNDEBUG -m64 -o main_gen_matrix ../src/main_gen_matrix.cpp")
+            os.system(icc_env + " ; " + "icc -O2 -DNDEBUG -m64 -qopenmp -o main_gen_matrix ../src/main_gen_matrix.cpp")
 
         if platform.system() == 'Windows':
             os.system("copy main_gen_matrix.exe " + curr_time)
@@ -52,7 +51,7 @@ if __name__ == "__main__":
         if platform.system() == 'Windows':
             os.system("cd " + curr_time + "& main_gen_matrix.exe " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3])
         elif platform.system() == 'Linux':
-            os.system("cd " + curr_time + "; ./main_gen_matrix " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3])
+            os.system(icc_env + " ; " + "cd " + curr_time + "; ./main_gen_matrix " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3])
 
         i = 4
         while (i < len(sys.argv)):
@@ -60,21 +59,21 @@ if __name__ == "__main__":
             print("Compiling Version_" + sys.argv[i] + " project...")
             print("="*79)
             if platform.system() == 'Windows':
-                os.system(icc_env + delim + "icl.exe ..\src\main_" + sys.argv[i] + ".cpp /O2 /D NDEBUG /Qopenmp")
+                os.system(icc_env + delim + "icl.exe ..\src\main_" + sys.argv[i] + ".cpp /O2 /D NDEBUG /Qopenmp /link tbb.lib")
                 os.system("copy main_" + sys.argv[i] + ".exe " + curr_time)
                 os.system("del main_" + sys.argv[i] + ".exe")
             elif platform.system() == 'Linux':
-                os.system(icc_env + " ; " + "icc ../src/main_" + sys.argv[i] + ".cpp -O2 -DNDEBUG -m64 -o main_" + sys.argv[i])
+                os.system(icc_env + " ; " + "icc ../src/main_" + sys.argv[i] + ".cpp -O2 -DNDEBUG -m64 -qopenmp -ltbb -o main_" + sys.argv[i])
                 os.system("cp main_" + sys.argv[i] + " " + curr_time)
                 os.system("rm main_" + sys.argv[i] + "")
 
             print("="*79)
-            print("Running MatrixGeneration project...")
+            print("Running Version_" + sys.argv[i] + " project...")
             print("="*79)
             if platform.system() == 'Windows':
                 os.system("cd " + curr_time + "& main_" + sys.argv[i] + ".exe " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
             elif platform.system() == 'Linux':
-                os.system("cd " + curr_time + " ; ./main_" + sys.argv[i] + " " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
+                os.system(icc_env + " ; " + "cd " + curr_time + " ; ./main_" + sys.argv[i] + " " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
             i = i + 1
 
         print("="*79)
