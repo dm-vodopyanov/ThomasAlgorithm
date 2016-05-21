@@ -47,7 +47,8 @@ This algorithm solves the problem of finding the interpolating square spline.
 3. ***For all projects:*** Go to Properties -> Debugging -> Working Directory and add set the value ```$(ProjectDir)/../../../bin```
 4. ***For all projects:*** Go to Properties -> C/C++ -> Language [Intel C++] -> OpenMP Support -> Generate Parallel Code (/Qopenmp)
 5. ***For MatrixGeneration project:*** Go to Properties -> Debugging -> Command Arguments and set value (example) ```5 0 1 inputfile```, where ```5``` is dimension of the matrix, ```0``` and ```1``` are minimum and maximum elements of the matrix, ```inputfile``` is name of the file that will be created
-6. ***For all Version_### projects:*** Go to Properties -> Debugging -> Command Arguments and set value ```inputfile outputfile timefile```   
+6. ***For all Version_### projects:*** Go to Properties -> Debugging -> Command Arguments and set value ```inputfile outputfile timefile```  
+  where ```###``` is ```Seq```, ```OpenMP```, ```TBB``` or ```Cilk```
 
 #### Compile and run using CLI
 ##### Automation
@@ -70,12 +71,12 @@ This algorithm solves the problem of finding the interpolating square spline.
 4. Compile and run Sequintal, OpenMP, Intel(R) TBB or Intel(R) Cilk(TM) Plus version:  
   ```icl.exe ###_version.cpp main.cpp /O2 /D NDEBUG /Qopenmp /link tbb.lib```  
   ```###_version.exe inputfile outputfile timefile```,  
-  where ### is ```seq```, ```openmp```, ```tbb``` or ```cilk```
+  where ```###``` is ```seq```, ```openmp```, ```tbb``` or ```cilk```
 
 ###### Linux and OS X
 1. Set the environment of Intel(R) Parallel Studio XE or Intel(R) System Studio (Linux only)  
   ```source /opt/intel/compilers_and_libraries/***/bin/compilervars.sh intel64```,  
-  where *** is ```linux``` or ```mac```
+  where ```***``` is ```linux``` or ```mac```
 2. Go to ThomasAlgorithm/src folder
 3. Create file with matrix:
   ```icc -O2 -DNDEBUG -m64 -qopenmp -o main_gen_matrix ../src/main_gen_matrix.cpp```  
@@ -83,7 +84,7 @@ This algorithm solves the problem of finding the interpolating square spline.
 4. Compile and run Sequintal, OpenMP, Intel(R) TBB or Intel(R) Cilk(TM) Plus version:  
   ```icc ###_version.cpp main.cpp -O2 -DNDEBUG -m64 -qopenmp -ltbb -o ###_version```  
   ```./###_version inputfile outputfile timefile```,  
-  where ### is ```seq```, ```openmp```, ```tbb``` or ```cilk```
+  where ```###``` is ```seq```, ```openmp```, ```tbb``` or ```cilk```
 
 #### Development process
 1. **AR Vasily**: Please make sure that the version of the file you contribute is the latest: ***as frequently as you can execute ```git pull```***
