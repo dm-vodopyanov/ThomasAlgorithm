@@ -12,7 +12,7 @@
 using namespace std;
 
 vector<double> func(int N, vector<double> matrix) {
-	vector<double> x;
+    vector<double> x;
 
-	return x;
+    return x;
 }
