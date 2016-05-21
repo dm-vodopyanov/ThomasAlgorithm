@@ -36,7 +36,7 @@ This algorithm solves the problem of finding the interpolating square spline.
 
 ***MatrixGeneration*** project generates tridiagonal matrices and writes them to file.  
 ***Version_Seq***, ***Version_OpenMP***, ***Version_TBB***, ***Version_Cilk*** projects get the MatrixGeneration's file, make calculations using one of the technologies describing above, and create two files: the file with result vector and the file with execution time of the implementation.  
-***Spline*** project implements the logic of finding the interpolating square spline and executes each of Version_### project.  
+***Spline*** project implements the logic of finding the interpolating square spline and executes each of Version_### project, where ```###``` is ```Seq```, ```OpenMP```, ```TBB``` or ```Cilk```.
 
 
 ### BKMs
@@ -47,8 +47,7 @@ This algorithm solves the problem of finding the interpolating square spline.
 3. ***For all projects:*** Go to Properties -> Debugging -> Working Directory and add set the value ```$(ProjectDir)/../../../bin```
 4. ***For all projects:*** Go to Properties -> C/C++ -> Language [Intel C++] -> OpenMP Support -> Generate Parallel Code (/Qopenmp)
 5. ***For MatrixGeneration project:*** Go to Properties -> Debugging -> Command Arguments and set value (example) ```5 0 1 inputfile```, where ```5``` is dimension of the matrix, ```0``` and ```1``` are minimum and maximum elements of the matrix, ```inputfile``` is name of the file that will be created
-6. ***For all Version_### projects:*** Go to Properties -> Debugging -> Command Arguments and set value ```inputfile outputfile timefile```  
-  where ```###``` is ```Seq```, ```OpenMP```, ```TBB``` or ```Cilk```
+6. ***For all Version_### projects:*** Go to Properties -> Debugging -> Command Arguments and set value ```inputfile outputfile timefile```, where ```###``` is ```Seq```, ```OpenMP```, ```TBB``` or ```Cilk```
 
 #### Compile and run using CLI
 ##### Automation
