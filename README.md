@@ -60,29 +60,29 @@ This algorithm solves the problem of finding the interpolating square spline.
   2. it is very "hardcoded" script, something can goes wrong
 
 ##### Manual
-##### Windows
-1. Set the environment of Intel(R) Parallel Studio XE
+###### Windows
+1. Set the environment of Intel(R) Parallel Studio XE  
   ```C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\bin\compilervars.bat intel64```
 2. Go to ThomasAlgorithm\src folder
-3. Create file with matrix:
-  ```icl.exe main_gen_matrix.cpp /O2 /D NDEBUG```
+3. Create file with matrix:  
+  ```icl.exe main_gen_matrix.cpp /O2 /D NDEBUG```  
   ```main_gen_matrix.exe <dimension> <minimum> <maximum> <filename>```
-4. Compile and run Sequintal, OpenMP, Intel(R) TBB or Intel(R) Cilk(TM) Plus version:
-  ```icl.exe ###_version.cpp main.cpp /O2 /D NDEBUG /Qopenmp /link tbb.lib```
-  ```###_version.exe inputfile outputfile timefile```,
+4. Compile and run Sequintal, OpenMP, Intel(R) TBB or Intel(R) Cilk(TM) Plus version:  
+  ```icl.exe ###_version.cpp main.cpp /O2 /D NDEBUG /Qopenmp /link tbb.lib```  
+  ```###_version.exe inputfile outputfile timefile```,  
   where ### is ```seq```, ```openmp```, ```tbb``` or ```cilk```
 
-##### Linux and OS X
-1. Set the environment of Intel(R) Parallel Studio XE or Intel(R) System Studio (Linux only)
-  ```source /opt/intel/compilers_and_libraries/***/bin/compilervars.sh intel64```,
+###### Linux and OS X
+1. Set the environment of Intel(R) Parallel Studio XE or Intel(R) System Studio (Linux only)  
+  ```source /opt/intel/compilers_and_libraries/***/bin/compilervars.sh intel64```,  
   where *** is ```linux``` or ```mac```
 2. Go to ThomasAlgorithm/src folder
 3. Create file with matrix:
-  ```icc -O2 -DNDEBUG -m64 -qopenmp -o main_gen_matrix ../src/main_gen_matrix.cpp```
+  ```icc -O2 -DNDEBUG -m64 -qopenmp -o main_gen_matrix ../src/main_gen_matrix.cpp```  
   ```./main_gen_matrix <dimension> <minimum> <maximum> <filename>```
-4. Compile and run Sequintal, OpenMP, Intel(R) TBB or Intel(R) Cilk(TM) Plus version:
-  ```icc ###_version.cpp main.cpp -O2 -DNDEBUG -m64 -qopenmp -ltbb -o ###_version```
-  ```./###_version inputfile outputfile timefile```,
+4. Compile and run Sequintal, OpenMP, Intel(R) TBB or Intel(R) Cilk(TM) Plus version:  
+  ```icc ###_version.cpp main.cpp -O2 -DNDEBUG -m64 -qopenmp -ltbb -o ###_version```  
+  ```./###_version inputfile outputfile timefile```,  
   where ### is ```seq```, ```openmp```, ```tbb``` or ```cilk```
 
 #### Development process
