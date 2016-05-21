@@ -49,9 +49,9 @@ if __name__ == "__main__":
         print("="*79)
 
         if platform.system() == 'Windows':
-            os.system("cd " + curr_time + "& main_gen_matrix.exe " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3])
+            os.system("cd " + curr_time + "& main_gen_matrix.exe " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3] + " inputfile")
         elif platform.system() == 'Linux':
-            os.system(icc_env + " ; " + "cd " + curr_time + "; ./main_gen_matrix " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3])
+            os.system(icc_env + " ; " + "cd " + curr_time + "; ./main_gen_matrix " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3] + " inputfile")
 
         i = 4
         while (i < len(sys.argv)):
@@ -107,6 +107,7 @@ if __name__ == "__main__":
             i = i + 1
 
         eps = 0.001
+        iterator = 0
 
         of1 = open(curr_time + '/outputfile_' + sys.argv[4], 'r')
         if (len(sys.argv) >= 6):
@@ -118,8 +119,9 @@ if __name__ == "__main__":
             for line1 in of1:
                 for line2 in of2:
                     if abs(float(line1)-float(line2)) > eps:
-                        print("    ERROR: " + line1[:line1.find("\n")] + " " + line2[:line2.find("\n")])
-                        log.write("    ERROR: " + line1[:line1.find("\n")] + " " + line2[:line2.find("\n")] + "\n")
+                        print("    ERROR: " + str(iterator) + " " + line1[:line1.find("\n")] + " " + line2[:line2.find("\n")])
+                        log.write("    ERROR: " + str(iterator) + " " + line1[:line1.find("\n")] + " " + line2[:line2.find("\n")] + "\n")
+                    iterator = iterator + 1
                     break
         if (len(sys.argv) >= 7):
             print("  " + sys.argv[4] + " vs " + sys.argv[6])
@@ -128,8 +130,9 @@ if __name__ == "__main__":
             for line1 in of1:
                 for line3 in of3:
                     if abs(float(line1)-float(line3)) > eps:
-                        print("    ERROR: " + line1[:line1.find("\n")] + " " + line3[:line3.find("\n")])
-                        log.write("    ERROR: " + line1[:line1.find("\n")] + " " + line3[:line3.find("\n")] + "\n")
+                        print("    ERROR: " + str(iterator) + " " + line1[:line1.find("\n")] + " " + line3[:line3.find("\n")])
+                        log.write("    ERROR: " + str(iterator) + " " + line1[:line1.find("\n")] + " " + line3[:line3.find("\n")] + "\n")
+                    iterator = iterator + 1
                     break
         if (len(sys.argv) == 8):
             print("  " + sys.argv[4] + " vs " + sys.argv[7])
@@ -138,8 +141,9 @@ if __name__ == "__main__":
             for line1 in of1:
                 for line4 in of4:
                     if abs(float(line1)-float(line4)) > eps:
-                        print("    ERROR: " + line1[:line1.find("\n")] + " " + line4[:line4.find("\n")])
-                        log.write("    ERROR: " + line1[:line1.find("\n")] + " " + line4[:line4.find("\n")] + "\n")
+                        print("    ERROR: " + str(iterator) + " " + line1[:line1.find("\n")] + " " + line4[:line4.find("\n")])
+                        log.write("    ERROR: " + str(iterator) + " " + line1[:line1.find("\n")] + " " + line4[:line4.find("\n")] + "\n")
+                    iterator = iterator + 1
                     break
 
         print("-"*79)

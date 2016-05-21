@@ -1,6 +1,6 @@
 ## Thomas Algorithm Demo application
 
-**Vasily Kumaev, Dmitry Vodopyanov**  
+**Dmitry Vodopyanov, Vasily Kumaev**  
 *Lobachevsky University, Nizhny Novgorod, Russia*
 
 
@@ -45,8 +45,8 @@ This algorithm solves the problem of finding the interpolating square spline.
 1. Configure the solution using CMake for Visual Studio
 2. Open Visual Studio and make sure that all your projects compile with Intel(R) C++ Compiler
 3. ***For all projects:*** Go to Properties -> Debugging -> Working Directory and add set the value ```$(ProjectDir)/../../../bin```
-4. ***For all projects:*** Go to Properties -> C/C++ -> Language -> OpenMP Support -> Generate Parallel Code (/Qopenmp)
-5. ***For MatrixGeneration project:*** Go to Properties -> Debugging -> Command Arguments and set value ```5 0 1```
+4. ***For all projects:*** Go to Properties -> C/C++ -> Language [Intel C++] -> OpenMP Support -> Generate Parallel Code (/Qopenmp)
+5. ***For MatrixGeneration project:*** Go to Properties -> Debugging -> Command Arguments and set value (example) ```5 0 1 inputfile```, where ```5``` is dimension, ```0``` and ```1``` are minimum and maximum elements of the matrix, ```inputfile``` is name of the file that will be created
 6. ***For all Version_### projects:*** Go to Properties -> Debugging -> Command Arguments and set value ```inputfile outputfile timefile```   
 
 #### Development process

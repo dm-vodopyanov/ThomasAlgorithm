@@ -13,10 +13,11 @@ using namespace std;
 void help() {
     printf("This is a tridiagonal matrix generation application.\n\n");
     printf("You should provide arguments in the following format:\n\n");
-    printf("  <dimension> <minimum> <maximum>\n\n");
+    printf("  <dimension> <minimum> <maximum> <filename>\n\n");
     printf("where  <dimension>  is dimension of the matrix,\n");
     printf("       <minimum>    is the smallest number in the matrix,\n");
-    printf("       <maximum>    is the largest number in the matrix.\n\n");
+    printf("       <maximum>    is the largest number in the matrix,\n");
+	printf("       <filename>   is name of the file that will be created.\n\n");
     printf("Example: The output matrix is the following:\n");
     printf("N 4\n");
     printf("0  c1 b1 f1\n");
@@ -77,8 +78,8 @@ int main(int argc, char* argv[]) {
         help();
         return -1;
     }
-    else if (argc != 4) {
-        printf("ERROR: Should be 3 arguments.\n\n");
+    else if (argc != 5) {
+        printf("ERROR: Should be 4 arguments.\n\n");
         help();
         return -1;
     }
@@ -86,11 +87,22 @@ int main(int argc, char* argv[]) {
     int N = atoi(argv[1]);
     int min = atoi(argv[2]);
     int max = atoi(argv[3]);
+	char* inputFile = argv[4];
+
+	if (N <= 0) {
+		printf("ERROR: Dimension should be > 0.\n");
+		return -1;
+	}
+
+	if (min >= max) {
+		printf("ERROR: Minimum element can not be bigger than maximum element.\n");
+		return -1;
+	}
 
     printf("Dimension is %d\n", N);
 
     FILE* f;
-    f = fopen("inputfile", "wt");
+    f = fopen(inputFile, "wt");
 
     srand(time(NULL));
 

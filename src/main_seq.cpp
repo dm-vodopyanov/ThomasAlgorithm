@@ -42,7 +42,7 @@ vector<double> parseInputFile(FILE* inputFile, int& N) {
 
 void writeResultToFile(char* fileName, vector<double> x, int N) {
     FILE* outputFile;
-    outputFile = fopen("outputfile_seq", "wt");
+    outputFile = fopen(fileName, "wt");
     fprintf(outputFile, "%d\n", N);
     for (int i = 0; i < N; i++) {
         fprintf(outputFile, "%lf\n", x[i]);
@@ -50,11 +50,44 @@ void writeResultToFile(char* fileName, vector<double> x, int N) {
     fclose(outputFile);
 }
 
-void writeTimeToFile(double resultTime) {
+void writeTimeToFile(char* fileName, double resultTime) {
     FILE* timeFile;
-    timeFile = fopen("timefile_seq", "wt");
+    timeFile = fopen(fileName, "wt");
     fprintf(timeFile, "%lf\n", resultTime);
     fclose(timeFile);
+}
+
+vector<double> thomas_seq(int N, vector<double> matrix) {
+	vector<double> alpha;
+	vector<double> beta;
+	vector<double> x;
+
+	x.resize(N);
+
+	alpha.push_back(-matrix[2] / matrix[1]);  // alpha_2 = -b_1 / c_1
+	beta.push_back(matrix[3] / matrix[1]);    // beta_2  =  f_1 / c_1
+
+	for (int i = 2; i < N; i++) {
+		alpha.push_back(-matrix[ROWS_NUM * (i - 1) + 2]
+			/ (matrix[ROWS_NUM * (i - 1)] * alpha[i - 2]
+				+ matrix[ROWS_NUM * (i - 1) + 1]));  // alpha_i+1
+		beta.push_back((matrix[ROWS_NUM * (i - 1) + 3]
+			- matrix[ROWS_NUM * (i - 1)] * beta[i - 2])
+			/ (matrix[ROWS_NUM * (i - 1)] * alpha[i - 2]
+				+ matrix[ROWS_NUM * (i - 1) + 1]));  // beta_i+1
+	}
+
+	x[N - 1] = (matrix[ROWS_NUM * (N - 1) + 3]
+		- matrix[ROWS_NUM * (N - 1)] * beta[N - 2])
+		/ (matrix[ROWS_NUM * (N - 1)] * alpha[N - 2]
+			+ matrix[ROWS_NUM * (N - 1) + 1]);  // x_N
+
+	int i = N - 2;
+	while (i >= 0) {
+		x[i] = (alpha[i] * x[i + 1] + beta[i]);  // x_i
+		i--;
+	}
+	return x;
 }
 
 int main(int argc, char* argv[]) {
@@ -68,8 +101,12 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+	char* inputFileName  = argv[1];
+	char* outputFileName = argv[2];
+	char* timeFileName   = argv[3];
+
     FILE* inputFile;
-    inputFile = fopen("inputfile", "rt");
+    inputFile = fopen(inputFileName, "rt");
     if (inputFile == NULL) {
         printf("ERROR: File %s not found\n", argv[1]);
         return -1;
@@ -80,47 +117,21 @@ int main(int argc, char* argv[]) {
     vector<double> matrix;
     matrix = parseInputFile(inputFile, N);
 
-    vector<double> alpha;
-    vector<double> beta;
-    vector<double> x;
+	vector<double> x;
 
     double t1 = omp_get_wtime();
 
     // SEQUINTAL VERSION STARTS =========================================================
 
-    x.resize(N);
-
-    alpha.push_back(-matrix[2] / matrix[1]);  // alpha_2 = -b_1 / c_1
-    beta.push_back(matrix[3] / matrix[1]);    // beta_2  =  f_1 / c_1
-
-    for (int i = 2; i < N; i++) {
-        alpha.push_back(-matrix[ROWS_NUM * (i - 1) + 2] 
-            / (matrix[ROWS_NUM * (i - 1)] * alpha[i - 2]
-                + matrix[ROWS_NUM * (i - 1) + 1]));  // alpha_i+1
-        beta.push_back((matrix[ROWS_NUM * (i - 1) + 3]
-            - matrix[ROWS_NUM * (i - 1)] * beta[i - 2]) 
-            / (matrix[ROWS_NUM * (i - 1)] * alpha[i - 2] 
-                + matrix[ROWS_NUM * (i - 1) + 1]));  // beta_i+1
-    }
-
-    x[N - 1] = (matrix[ROWS_NUM * (N - 1) + 3]
-        - matrix[ROWS_NUM * (N - 1)] * beta[N - 2]) 
-        / (matrix[ROWS_NUM * (N - 1)] * alpha[N - 2] 
-            + matrix[ROWS_NUM * (N - 1) + 1]);  // x_N
-
-    int i = N - 2;
-    while (i >= 0) {
-        x[i] = (alpha[i] * x[i + 1] + beta[i]);  // x_i
-        i--;
-    }
+	x = thomas_seq(N, matrix);
 
     // SEQUINTAL VERSION ENDS ===========================================================
 
     double t2 = omp_get_wtime();
     double resultTime = t2 - t1;
 
-    writeResultToFile(argv[2], x, N);
-    writeTimeToFile(resultTime);
+    writeResultToFile(outputFileName, x, N);
+    writeTimeToFile(timeFileName, resultTime);
 
     printf("Files created.\n");
 

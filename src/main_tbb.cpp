@@ -44,7 +44,7 @@ vector<double> parseInputFile(FILE* inputFile, int& N) {
 
 void writeResultToFile(char* fileName, vector<double> x, int N) {
     FILE* outputFile;
-    outputFile = fopen("outputfile_tbb", "wt");
+    outputFile = fopen(fileName, "wt");
     fprintf(outputFile, "%d\n", N);
     for (int i = 0; i < N; i++) {
         fprintf(outputFile, "%lf\n", x[i]);
@@ -52,9 +52,9 @@ void writeResultToFile(char* fileName, vector<double> x, int N) {
     fclose(outputFile);
 }
 
-void writeTimeToFile(double resultTime) {
+void writeTimeToFile(char* fileName, double resultTime) {
     FILE* timeFile;
-    timeFile = fopen("timefile_tbb", "wt");
+    timeFile = fopen(fileName, "wt");
     fprintf(timeFile, "%lf\n", resultTime);
     fclose(timeFile);
 }
@@ -70,8 +70,12 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+	char* inputFileName = argv[1];
+	char* outputFileName = argv[2];
+	char* timeFileName = argv[3];
+
     FILE* inputFile;
-    inputFile = fopen("inputfile", "rt");
+    inputFile = fopen(inputFileName, "rt");
     if (inputFile == NULL) {
         printf("ERROR: File %s not found\n", argv[1]);
         return -1;
@@ -95,8 +99,8 @@ int main(int argc, char* argv[]) {
     double t2 = omp_get_wtime();
     double resultTime = t2 - t1;
 
-    writeResultToFile(argv[2], x, N);
-    writeTimeToFile(resultTime);
+    writeResultToFile(outputFileName, x, N);
+    writeTimeToFile(timeFileName, resultTime);
 
     printf("Files created.\n");
 
