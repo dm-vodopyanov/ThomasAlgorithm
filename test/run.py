@@ -59,21 +59,21 @@ if __name__ == "__main__":
             print("Compiling Version_" + sys.argv[i] + " project...")
             print("="*79)
             if platform.system() == 'Windows':
-                os.system(icc_env + delim + "icl.exe ..\src\main_" + sys.argv[i] + ".cpp /O2 /D NDEBUG /Qopenmp /link tbb.lib")
-                os.system("copy main_" + sys.argv[i] + ".exe " + curr_time)
-                os.system("del main_" + sys.argv[i] + ".exe")
+                os.system(icc_env + delim + "icl.exe ..\src\\" + sys.argv[i] + "_version.cpp ..\src\main.cpp /O2 /D NDEBUG /Qopenmp /link tbb.lib")
+                os.system("copy "+ sys.argv[i] + "_version.exe " + curr_time)
+                os.system("del " + sys.argv[i] + "_version.exe")
             elif platform.system() == 'Linux':
-                os.system(icc_env + " ; " + "icc ../src/main_" + sys.argv[i] + ".cpp -O2 -DNDEBUG -m64 -qopenmp -ltbb -o main_" + sys.argv[i])
-                os.system("cp main_" + sys.argv[i] + " " + curr_time)
-                os.system("rm main_" + sys.argv[i] + "")
+                os.system(icc_env + " ; " + "icc ../src/main.cpp ../src/" + sys.argv[i] + "_version.cpp -O2 -DNDEBUG -m64 -qopenmp -ltbb -o main_" + sys.argv[i])
+                os.system("cp " + sys.argv[i] + "_version " + curr_time)
+                os.system("rm main_" + sys.argv[i] + "_version")
 
             print("="*79)
             print("Running Version_" + sys.argv[i] + " project...")
             print("="*79)
             if platform.system() == 'Windows':
-                os.system("cd " + curr_time + "& main_" + sys.argv[i] + ".exe " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
+                os.system("cd " + curr_time + "& " + sys.argv[i] + "_version.exe " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
             elif platform.system() == 'Linux':
-                os.system(icc_env + " ; " + "cd " + curr_time + " ; ./main_" + sys.argv[i] + " " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
+                os.system(icc_env + " ; " + "cd " + curr_time + " ; ./" + sys.argv[i] + "_version " + "inputfile outputfile_" + sys.argv[i] + " timefile_" + sys.argv[i])
             i = i + 1
 
         print("="*79)
