@@ -68,7 +68,7 @@ vector<double> func(int N, vector<double> matrix) {
     double t1 = omp_get_wtime();
 
     //P = omp_get_num_threads();
-    P = 8;
+    P = 4;
     grainsize = N / P;
 
     //#pragma omp parallel shared(matrix,miniMatrix,intermediateX,X,g,d,grainsize,P,N,t,r) private(m,x,coef, i, j, n, y)
@@ -123,10 +123,14 @@ vector<double> func(int N, vector<double> matrix) {
                 matrix[(grainsize * 4 - 9) - (m - 1) * 4 + n * grainsize * 4] = matrix[(grainsize * 4 - 9) - (m - 1) * 4 + n * grainsize * 4] - coef * matrix[(grainsize * 4 - 5) - (m - 1) * 4 + n * grainsize * 4];
                 // d[grainsize - (m + 1) + grainsize * CurP] = d[grainsize - (m + 1) + grainsize * CurP] - coef * d[grainsize - m + grainsize * CurP]
                 //if (m != grainsize - 1)
-                if (m == grainsize - 1)
+
+				if (m != grainsize - 1)
+				d[grainsize - (m + 1) + grainsize * n] = d[grainsize - (m + 1) + grainsize * n] - coef * d[grainsize - m + grainsize * n];
+
+				else
                     matrix[4 * n * grainsize - 3] = matrix[4 * n * grainsize - 3] - coef * d[grainsize - m + grainsize * n];
 
-                d[grainsize - (m + 1) + grainsize * n] = d[grainsize - (m + 1) + grainsize * n] - coef * d[grainsize - m + grainsize * n];
+                
                 //else
                 }
         }
@@ -167,9 +171,9 @@ vector<double> func(int N, vector<double> matrix) {
         {
             // X[grainsize*(y + 1) - x] = (f[grainsize - x + y * grainsize] - c[grainsize - x + y * grainsize] * X[grainsize - x + 1 + y * grainsize]) / a[grainsize - x + y * grainsize] 
             if(y != 0)
-                X[grainsize * (y + 1) - x - 1] = (matrix[(grainsize * (y + 1) * 4 - 1) - x * 4] - g[grainsize * (y + 1) - x]  * X[grainsize * (y + 1) - x] - d[grainsize * (y + 1) - x] * X[grainsize * (y + 1) - x - grainsize]) / matrix[(grainsize * (y + 1) * 4 - 3) - x * 4];
+                X[grainsize * (y + 1) - x - 1] = (matrix[(grainsize * (y + 1) * 4 - 1) - x * 4] - g[grainsize * (y + 1) - x]  * X[grainsize * (y + 1) - 1] - d[grainsize * (y + 1) - x] * X[grainsize * (y - 1) - 1 + grainsize]) / matrix[(grainsize * (y + 1) * 4 - 3) - x * 4];
             else    
-                X[grainsize * (y + 1) - x - 1] = (matrix[(grainsize * (y + 1) * 4 - 1) - x * 4] - g[grainsize * (y + 1) - x] * X[grainsize * (y + 1) - x]) / matrix[(grainsize * (y + 1) * 4 - 3) - x * 4];
+                X[grainsize * (y + 1) - x - 1] = (matrix[(grainsize * (y + 1) * 4 - 1) - x * 4] - g[grainsize * (y + 1) - x] * X[grainsize * (y + 1) - 1]) / matrix[(grainsize * (y + 1) * 4 - 3) - x * 4];
         }
     }
     //}
