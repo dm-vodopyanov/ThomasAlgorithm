@@ -63,9 +63,9 @@ if __name__ == "__main__":
                 os.system("copy "+ sys.argv[i] + "_version.exe " + curr_time)
                 os.system("del " + sys.argv[i] + "_version.exe")
             elif platform.system() == 'Linux':
-                os.system(icc_env + " ; " + "icc ../src/main.cpp ../src/" + sys.argv[i] + "_version.cpp -O2 -DNDEBUG -m64 -qopenmp -ltbb -o main_" + sys.argv[i])
+                os.system(icc_env + " ; " + "icc ../src/main.cpp ../src/" + sys.argv[i] + "_version.cpp -O2 -DNDEBUG -m64 -qopenmp -ltbb -o " + sys.argv[i] + "_version")
                 os.system("cp " + sys.argv[i] + "_version " + curr_time)
-                os.system("rm main_" + sys.argv[i] + "_version")
+                os.system("rm " + sys.argv[i] + "_version")
 
             print("="*79)
             print("Running Version_" + sys.argv[i] + " project...")
@@ -115,7 +115,7 @@ if __name__ == "__main__":
             log.write("Files comparison:\n")
             print("  " + sys.argv[4] + " vs " + sys.argv[5])
             log.write("  " + sys.argv[4] + " vs " + sys.argv[5] + "\n")
-            of2 = open(curr_time + '\\outputfile_' + sys.argv[5], 'r')
+            of2 = open(curr_time + '/outputfile_' + sys.argv[5], 'r')
             for line1 in of1:
                 for line2 in of2:
                     if abs(float(line1)-float(line2)) > eps:
